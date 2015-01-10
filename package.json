@@ -1,0 +1,34 @@
+{
+  "name": "TPI-Lab3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juk-eluca/TPI-Lab3.git"
+  },
+  "author": "juk, Victor Luca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juk-eluca/TPI-Lab3/issues"
+  },
+  "homepage": "https://github.com/juk-eluca/TPI-Lab3",
+  "dependencies": {
+    "browserify": "^8.1.0",
+    "d3": "^3.5.3",
+    "express": "^4.10.7",
+    "gulp": "^3.8.10",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-util": "^3.0.2",
+    "jade": "^1.8.2",
+    "moment": "^2.9.0",
+    "nodemon": "^1.2.1",
+    "underscore": "^1.7.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
+  }
+}
