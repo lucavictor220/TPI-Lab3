@@ -1,6 +1,6 @@
 var moment = require("moment");
 var underscore = require("underscore");
-var d3 = require("d3");
+var d3 = require("d3-browserify");
 
 d3.json("articles.json", function(error, json) {
   if (error) return console.warn(error);
