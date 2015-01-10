@@ -1,4 +1,4 @@
 node_modules
-public
-!public/articles.json
+public/bundle.js
+public/bundle.js,map
 npm-debug.log
