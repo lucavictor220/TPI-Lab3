@@ -9,7 +9,7 @@ var nodemon = require('nodemon');
 
 var bundler = watchify(browserify('./assets/scripts/index.js', watchify.args));
 
-gulp.task('js', bundle); // so you can run `gulp js` to build the file
+gulp.task('scripts', bundle); // so you can run `gulp js` to build the file
 bundler.on('update', bundle); // on any dep update, runs the bundler
 
 function bundle() {
@@ -23,7 +23,17 @@ function bundle() {
     .pipe(gulp.dest('./public'));
 }
 
-gulp.task("default", ["js"], function() {
+function styler() {
+  return gulp.src('./assets/styles/style.css')
+    .pipe(gulp.dest('./public'));
+}
+
+gulp.task('styles', function () {
+  gulp.watch('./assets/styles/style.css', styler);
+  return styler()
+});
+
+gulp.task("default", ["scripts", "styles"], function() {
   nodemon({
     "script": "app.js",
     "ignore": ['./assets/', './public/']
