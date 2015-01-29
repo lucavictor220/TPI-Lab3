@@ -64,7 +64,8 @@ var visualization = function(articles) {
       "value":  article[1]
     });
   });
-
+  var average_nr_of_article_per_day = averageNumberOfArticlesPerDay(articles);
+  console.log(average_nr_of_article_per_day);
   //line chart1
   d3code.drawGraph1(array_articles);
 
@@ -164,7 +165,8 @@ d3code.drawGraph3(average_views_per_month_array);
   });
   var Probability = articles_that_have_more_average_views.length / articles_with_video.length * 100;
   console.log("Probability is: " + Probability + "%");
-
+  var element = document.getElementsByClassName('probability')[0];
+  element.innerHTML = "Probability is: " + Probability + "%";
 
   var nr_of_articles_with_video = articles_with_video.length;
   var nr_of_articles_without_video = articles.length - nr_of_articles_with_video;
@@ -256,6 +258,7 @@ d3code.drawhistogram(arr_of_articles_with_without_video);
 
 
 var articles_without_symbols = replaceSymbols(articles);
+var split_array_without_symbols = articles_without_symbols.
 
   debugger
 

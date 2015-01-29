@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1422503120 "Lab3.tex" "Lab3.pdf" "Lab3" 1422503120
+["pdflatex"] 1422512044 "Lab3.tex" "Lab3.pdf" "Lab3" 1422512045
   "/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf" 1367878877 6963 2e0cb3d93aa64508bdb0db58ae900d97 ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel-romanian/romanian.ldf" 1367878979 3935 6e9d6e4513aca0818347a8cd5128ee8b ""
@@ -53,16 +53,16 @@
   "/usr/share/texlive/texmf-dist/tex/latex/ucs/ucsencs.def" 1368571634 22368 c53c9d0d16c65bef2b157515c9d9f658 ""
   "/usr/share/texlive/texmf-dist/tex/latex/ucs/utf8x.def" 1368571634 8036 21f7ac37aafb6cfeddbb196b8bfd6280 ""
   "/usr/share/texlive/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "Lab3.aux" 1422503120 824 5421fa498c12f814a240cf222f199f32 ""
-  "Lab3.out" 1422503120 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "Lab3.tex" 1422503096 8584 25a18650682e4535fa6d948c8bb2547f ""
+  "Lab3.aux" 1422512045 824 5421fa498c12f814a240cf222f199f32 ""
+  "Lab3.out" 1422512044 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "Lab3.tex" 1422512043 8733 a6931ae31e25d9fdd84d400a117b8638 ""
   "Lab3d1.png" 1422496968 30242 3768615af905c95ba72b736bd37e75f8 ""
   "Lab3d2.png" 1422496999 42364 b6edde52cb5743e1074119196faf8bfa ""
   "Lab3d3.png" 1422497042 27005 bdd16b84587c874fa245f1184910b6f6 ""
   "Lab3d4.png" 1422497068 34556 790d158e13689e0875d8381c47b2019e ""
   "Lab3d5.png" 1422497094 2386 1923d515e91d4c682718cba3ace5b359 ""
   (generated)
-  "Lab3.aux"
-  "Lab3.log"
   "Lab3.pdf"
   "Lab3.out"
+  "Lab3.aux"
+  "Lab3.log"
