@@ -1,9 +1,8 @@
 var moment = require("moment");
 var _ = require("underscore");
 var d3 = require("d3-browserify");
-var smth = require("./smth")
+var d3code = require("./d3code")
 
-smth.myFunction();
 
 d3.json("articles.json", function(error, json) {
   if (error) return console.warn(error);
@@ -18,6 +17,14 @@ var parseData = function(articles) {
   });
   return articles;
 }
+
+var replaceSymbols = function(articles) {
+   _.each(articles, function(article) {
+    article.content = article.content.replace(/[!,?.":;]/g, '');
+  });
+  return articles;
+}
+
 var divideArticles = function(articles) {
   return _.groupBy(articles, function(article) {
     return article.source;
@@ -59,59 +66,7 @@ var visualization = function(articles) {
   });
 
   //line chart1
-
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-  var parseDate = d3.time.format("%b-%y").parse;
-
-  var x = d3.time.scale()
-      .range([0, width]);
-
-  var y = d3.scale.linear()
-      .range([height, 0]);
-
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
-
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
-
-  var line = d3.svg.line()
-      .x(function(d) { return x(d.date); })
-      .y(function(d) { return y(d.value); });
-
-  var svg = d3.select("div.first").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    x.domain(d3.extent(array_articles, function(d) { return d.date; }));
-    y.domain(d3.extent(array_articles, function(d) { return d.value; }));
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("articles");
-
-    svg.append("path")
-        .datum(array_articles)
-        .attr("class", "line")
-        .attr("d", line);
+  d3code.drawGraph1(array_articles);
 
 
   var unimedia = _.where(sorted_articles, {source : "unimedia"});
@@ -145,69 +100,7 @@ var visualization = function(articles) {
 
 
   //line chart2
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-  var parseDate = d3.time.format("%b-%y").parse;
-
-  var x = d3.time.scale()
-      .range([0, width]);
-
-  var y = d3.scale.linear()
-      .range([height, 0]);
-
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
-
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
-
-  var line1 = d3.svg.line()
-      .x(function(d) { return x(d.date); })
-      .y(function(d) { return y(d.value1); });
-  var line2 = d3.svg.line()
-      .x(function(d) { return x(d.date); })
-      .y(function(d) { return y(d.value2); });
-
-  var svg = d3.select("div.second").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    x.domain(d3.extent(array_articles_unimedia, function(d) { return d.date; }));
-    y.domain(d3.extent(array_articles_unimedia, function(d) { return d.value1; }));
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("articles");
-
-    svg.append("path")
-        .datum(array_articles_unimedia)
-        .style("stroke", "green")
-        .attr("class", "line")
-        .attr("d", line1);
-
-    svg.append("path")
-        .datum(array_articles_timpul)
-        .style("stroke", "red")
-        .attr("class", "line")
-        .attr("d", line2);
-
+    d3code.drawGraph2(array_articles_unimedia, array_articles_timpul);
 
   var new_array = _.map(articles, function(article) {
     return {
@@ -248,59 +141,122 @@ var visualization = function(articles) {
   });
 
   // line chart 3
+d3code.drawGraph3(average_views_per_month_array);
 
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
 
-  var parseDate = d3.time.format("%b-%y").parse;
+ var articles_with_video = _.filter(articles, function(article) {
+  return article.title.indexOf("video")  >= 0 || article.title.indexOf("Video")  >= 0 ||
+    article.title.indexOf("VIDEO")  >= 0;
+ });
+  //average of views for articles
+  var nr_of_views = _.reduce(articles, function(memo, article) {
+      return memo + article.views;
+    }, 0);
+  var average_nr_of_views = nr_of_views / articles.length;
+  //average of views for articles with video
+  var nr_of_views_for_articles_with_video = _.reduce(articles_with_video, function(memo, article) {
+      return memo + article.views;
+    }, 0);
+  var average_nr_of_views_for_articles_with_video = nr_of_views_for_articles_with_video / articles_with_video.length;
+  var articles_that_have_more_average_views = [];
+  articles_that_have_more_average_views = _.filter(articles_with_video, function(article) {
+    return article.views > average_nr_of_views;
+  });
+  var Probability = articles_that_have_more_average_views.length / articles_with_video.length * 100;
+  console.log("Probability is: " + Probability + "%");
 
-  var x = d3.time.scale()
-      .range([0, width]);
 
-  var y = d3.scale.linear()
-      .range([height, 0]);
+  var nr_of_articles_with_video = articles_with_video.length;
+  var nr_of_articles_without_video = articles.length - nr_of_articles_with_video;
 
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+  articles_with_video = _.map(articles_with_video, function(article) {
+  return {
+    views:  article.views,
+    date:   article.datetime
+    }
+  });
 
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
+  articles_with_video = _.groupBy(articles_with_video, function(article) {
+  year  = article.date.year();
+  month = article.date.month();
+  var newdate_timpul = moment().year(year).month(month + 1).date(0).hours(0).minutes(0).seconds(0);
+  return newdate_timpul.toDate();
+  });
 
-  var line3 = d3.svg.line()
-      .x(function(d) { return x(d.date); })
-      .y(function(d) { return y(d.value3); });
+  articles_with_video = _.pairs(articles_with_video);
 
-  var svg = d3.select("div.third")
-    .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ _.each(articles_with_video, function(property) {
+    property[0] = moment(property[0]).toDate();
+  });
 
-    x.domain(d3.extent(average_views_per_month_array, function(d) { return d.date; }));
-    y.domain(d3.extent(average_views_per_month_array, function(d) { return d.value3; }));
+  articles_with_video = _.sortBy(articles_with_video, function(property) {
+    return property[0];
+  });
 
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+  var average_views_per_month_of_articles_with_video = [];
+  _.each(articles_with_video, function(property) {
+    var average_views_per_month = 0;
+    average_views_per_month = _.reduce(property[1], function(memo, article) {
+      return memo + article.views;
+    }, 0);
 
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("views");
+    average_views_per_month_of_articles_with_video.push({
+      "date":   property[0],
+      "value4": average_views_per_month / property[1].length
+    });
+  });
 
-    svg.append("path")
-        .datum(average_views_per_month_array)
-        .attr("class", "line")
-        .style("stroke", "yellow")
-        .attr("d", line3);
+
+  var articles_without_video = _.filter(articles, function(article) {
+  return article.title.indexOf("video")  == -1 && article.title.indexOf("Video")  == -1 &&
+    article.title.indexOf("VIDEO")  == -1;
+  });
+
+  articles_without_video = _.map(articles_without_video, function(article) {
+  return {
+    views:  article.views,
+    date:   article.datetime
+    }
+  });
+  articles_without_video = _.groupBy(articles_without_video, function(article) {
+  year  = article.date.year();
+  month = article.date.month();
+  var newdate_timpul = moment().year(year).month(month + 1).date(0).hours(0).minutes(0).seconds(0);
+  return newdate_timpul.toDate();
+  });
+  articles_without_video = _.pairs(articles_without_video);
+
+ _.each(articles_without_video, function(property) {
+    property[0] = moment(property[0]).toDate();
+  });
+
+  articles_without_video = _.sortBy(articles_without_video, function(property) {
+    return property[0];
+  });
+
+ var average_views_per_month_of_articles_without_video = [];
+  _.each(articles_without_video, function(property) {
+    var average_views_per_month = 0;
+    average_views_per_month = _.reduce(property[1], function(memo, article) {
+      return memo + article.views;
+    }, 0);
+
+    average_views_per_month_of_articles_without_video.push({
+      "date":   property[0],
+      "value5": average_views_per_month / property[1].length
+    });
+  });
+
+  // line chart 4
+d3code.drawGraph4(average_views_per_month_of_articles_with_video, average_views_per_month_of_articles_without_video);
+
+var arr_of_articles_with_without_video = [nr_of_articles_with_video,nr_of_articles_without_video];
+
+d3code.drawhistogram(arr_of_articles_with_without_video);
+
+
+var articles_without_symbols = replaceSymbols(articles);
+
+  debugger
+
 }
